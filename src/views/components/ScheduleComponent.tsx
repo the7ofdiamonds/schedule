@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import type { TypedUseSelectorHook } from 'react-redux';
 
-import { useAppDispatch, useAppSelector } from '@/model/hooks';
-
 import { getUser } from '@the7ofdiamonds/gateway';
 import {
   getAvailableTimes,
@@ -27,34 +25,17 @@ export type Hours = {
   dayofweek: string;
 }
 
-interface ScheduleComponentProps<RootState, AppDispatch> {
-  useAppSelector: TypedUseSelectorHook<RootState>;
-  useAppDispatch: () => AppDispatch;
+interface ScheduleComponentProps {
+  officeHours: Array<Hours>;
+  availableDates: Array<string>
+  availableTimes: Array<string>;
+  communicationPreferences: Array<string>;
 }
 
-export const ScheduleComponent: React.FC<ScheduleComponentProps<any, any>> = ({ useAppSelector, useAppDispatch }) => {
+export const ScheduleComponent: React.FC<ScheduleComponentProps> = ({ officeHours, availableDates, availableTimes, communicationPreferences }) => {
   const { id } = useParams();
   const user_email = '';
 
-  // const { user_email, user_id } = useAppSelector((state) => state.users);
-  const {
-    scheduleLoading,
-    scheduleError,
-    events,
-    start_date,
-    start_time,
-    event_id,
-    event_date_time,
-    summary,
-    description,
-    attendees,
-    office_hours,
-    communication_preferences,
-  } = useAppSelector((state) => state.schedule);
-
-  const [officeHours, setOfficeHours] = useState<Array<Hours> | null>(null);
-  const [availableDates, setAvailableDates] = useState<Array<string>>([]);
-  const [availableTimes, setAvailableTimes] = useState<Array<string>>([]);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedSummary, setSelectedSummary] = useState('');
@@ -62,80 +43,34 @@ export const ScheduleComponent: React.FC<ScheduleComponentProps<any, any>> = ({ 
   const [selectedCommunicationPreference, setCommunicationPreference] =
     useState('');
   const [selectedAttendees, setSelectedAttendees] = useState([]);
+
   const [showAdditionalAttendee, setShowAdditionalAttendee] = useState(false);
   const [additionalAttendeeEmail, setAdditionalAttendeeEmail] = useState('');
+
   const [messageType, setMessageType] = useState('info');
   const [message, setMessage] = useState('Choose a date');
 
-  const dateSelectRef = useRef(null);
-  const timeSelectRef = useRef(null);
-  const summarySelectRef = useRef(null);
-  const descriptionSelectRef = useRef(null);
-  const communicationPreferenceSelectRef = useRef(null);
-  const attendeesSelectRef = useRef(null);
-
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  const dateSelectRef = useRef<HTMLElement | null>(null);
+  const timeSelectRef = useRef<HTMLElement | null>(null);
+  const summarySelectRef = useRef<HTMLElement | null>(null);
+  const descriptionSelectRef = useRef<HTMLElement | null>(null);
+  const communicationPreferenceSelectRef = useRef<HTMLElement | null>(null);
+  const attendeesSelectRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    dispatch(getOfficeHours());
+    dateSelectRef.current = document.getElementById('date_select');
+    timeSelectRef.current = document.getElementById('time_select');
+    summarySelectRef.current = document.getElementById('summary_select');
+    descriptionSelectRef.current = document.getElementById('description_select');
+    attendeesSelectRef.current = document.getElementById('description_select');
   }, []);
 
   // useEffect(() => {
-  //   if (office_hours) {
-  //     setOfficeHours(formatOfficeHours(office_hours));
+  //   if (availableDates && availableDates.length > 0) {
+  //     setSelectedDate(availableDates[0]);
+  //     dispatch(updateDate(availableDates[0]));
   //   }
-  // }, [office_hours]);
-
-  // Client info
-  // useEffect(() => {
-  //   if (user_email) {
-  //     dispatch(getUser(user_email));
-  //   }
-  // }, [user_email]);
-
-  // useEffect(() => {
-  //   if (!user_email) {
-  //     setMessageType('info');
-  //     setMessage('Login to schedule an appointment');
-  //   }
-  // }, [user_email]);
-
-  // Events
-  // useEffect(() => {
-  //   if (user_id) {
-  //     dispatch(getAvailableTimes());
-  //   }
-  // }, [user_id, dispatch]);
-
-  // useEffect(() => {
-  //   if (scheduleError) {
-  //     setMessageType('error');
-  //     setMessage(scheduleError);
-  //   }
-  // }, [messageType, message]);
-
-  // useEffect(() => {
-  //   if (events) {
-  //     setAvailableDates(datesAvail(events));
-  //   }
-  // }, [events]);
-
-  // useEffect(() => {
-  //   dateSelectRef.current = document.getElementById('date_select');
-  //   timeSelectRef.current = document.getElementById('time_select');
-  //   summarySelectRef.current = document.getElementById('summary_select');
-  //   descriptionSelectRef.current =
-  //     document.getElementById('description_select');
-  //   attendeesSelectRef.current = document.getElementById('description_select');
-  // }, []);
-
-  useEffect(() => {
-    if (availableDates && availableDates.length > 0) {
-      setSelectedDate(availableDates[0]);
-      dispatch(updateDate(availableDates[0]));
-    }
-  }, [availableDates]);
+  // }, [availableDates]);
 
   // useEffect(() => {
   //   if (selectedDate && dateSelectRef.current) {
@@ -144,12 +79,12 @@ export const ScheduleComponent: React.FC<ScheduleComponentProps<any, any>> = ({ 
   //   }
   // }, [selectedDate]);
 
-  useEffect(() => {
-    if (availableTimes) {
-      setSelectedTime(availableTimes[0]);
-      dispatch(updateTime(availableTimes[0]));
-    }
-  }, [availableTimes]);
+  // useEffect(() => {
+  //   if (availableTimes) {
+  //     setSelectedTime(availableTimes[0]);
+  //     dispatch(updateTime(availableTimes[0]));
+  //   }
+  // }, [availableTimes]);
 
   // const handleDateChange = (event) => {
   //   if (dateSelectRef.current) {
@@ -176,11 +111,11 @@ export const ScheduleComponent: React.FC<ScheduleComponentProps<any, any>> = ({ 
   //   }
   // };
 
-  useEffect(() => {
-    if (start_date && start_time) {
-      dispatch(updateEvent());
-    }
-  }, [start_date, start_time, dispatch]);
+  // useEffect(() => {
+  //   if (start_date && start_time) {
+  //     dispatch(updateEvent());
+  //   }
+  // }, [start_date, start_time, dispatch]);
 
   // Summary
 
@@ -275,11 +210,11 @@ export const ScheduleComponent: React.FC<ScheduleComponentProps<any, any>> = ({ 
   //   }
   // };
 
-  useEffect(() => {
-    if (event_id) {
-      window.location.href = '/dashboard';
-    }
-  }, [event_id]);
+  // useEffect(() => {
+  //   if (event_id) {
+  //     window.location.href = '/dashboard';
+  //   }
+  // }, [event_id]);
 
   // if (loading) {
   //   return <div>Loading...</div>;
@@ -317,7 +252,7 @@ export const ScheduleComponent: React.FC<ScheduleComponentProps<any, any>> = ({ 
                     typeof="text"
                     name="date"
                     id="date_select"
-                    ref={dateSelectRef}
+                    // ref={dateSelectRef}
                     onChange={() => { }}
                     defaultValue={selectedDate}
                   // min={new Date().toISOString().split('T')[0]}
@@ -340,7 +275,7 @@ export const ScheduleComponent: React.FC<ScheduleComponentProps<any, any>> = ({ 
                     typeof="time"
                     name="time"
                     id="time_select"
-                    ref={timeSelectRef}
+                    // ref={timeSelectRef}
                     defaultValue={selectedTime}
                     onChange={() => { }}>
                     {availableTimes.map((time, index) => (
@@ -355,32 +290,30 @@ export const ScheduleComponent: React.FC<ScheduleComponentProps<any, any>> = ({ 
               )}
             </div>
 
-            {communication_preferences &&
-              communication_preferences.length > 0 ? (
-              <div className="communication-select card">
-                <label htmlFor="summary">Preferred Communication Type</label>
-                <select
-                  typeof="text"
-                  name="preferred_communication_type"
-                  id="communication_select"
-                  ref={communicationPreferenceSelectRef}
-                  onChange={() => { }}
-                  defaultValue={selectedCommunicationPreference}>
-                  {communication_preferences.map((communication, index) => (
-                    <option key={index} value={communication}>
-                      {communication}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            ) : (
-              ''
-            )}
+            {communicationPreferences &&
+              communicationPreferences.length > 0 && (
+                <div className="communication-select card">
+                  <label htmlFor="summary">Preferred Communication Type</label>
+                  <select
+                    typeof="text"
+                    name="preferred_communication_type"
+                    id="communication_select"
+                    // ref={communicationPreferenceSelectRef}
+                    onChange={() => { }}
+                    defaultValue={selectedCommunicationPreference}>
+                    {communicationPreferences.map((communication, index) => (
+                      <option key={index} value={communication}>
+                        {communication}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
-            {attendees && attendees.length > 0 ? (
+            {selectedAttendees && selectedAttendees.length > 0 ? (
               <div className="attendees-select card">
                 <label htmlFor="attendees">Attendees</label>
-                {attendees.map((attendee, index) => (
+                {selectedAttendees.map((attendee, index) => (
                   <div className="attendee">
                     <h4 key={index}>{attendee}</h4>
                     <button
