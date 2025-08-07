@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import type { TypedUseSelectorHook } from 'react-redux';
 
+import { Main, StatusBar } from '@the7ofdiamonds/ui-ux';
+import type { Hours, MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
 import { getUser } from '@the7ofdiamonds/gateway';
 import {
   getAvailableTimes,
@@ -18,15 +20,10 @@ import {
   updateCommunicationPreference,
 } from '@/controllers/scheduleSlice';
 import { formatOfficeHours, datesAvail, timesAvail } from '@/utils/Schedule';
-
-export type Hours = {
-  start: string;
-  end: string;
-  dayofweek: string;
-}
+import { OfficeHoursComponent } from './office-hours/OfficeHoursComponent';
 
 interface ScheduleComponentProps {
-  officeHours: Array<Hours>;
+  officeHours: Array<Hours> | null;
   availableDates: Array<string>
   availableTimes: Array<string>;
   communicationPreferences: Array<string>;
@@ -35,6 +32,10 @@ interface ScheduleComponentProps {
 export const ScheduleComponent: React.FC<ScheduleComponentProps> = ({ officeHours, availableDates, availableTimes, communicationPreferences }) => {
   const { id } = useParams();
   const user_email = '';
+
+  const [showStatusBar, setShowStatusBar] = useState<StatusBarVisibility>('hide');
+  const [messageType, setMessageType] = useState<MessageType>('info');
+  const [message, setMessage] = useState<string>('Choose a date');
 
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
@@ -46,9 +47,6 @@ export const ScheduleComponent: React.FC<ScheduleComponentProps> = ({ officeHour
 
   const [showAdditionalAttendee, setShowAdditionalAttendee] = useState(false);
   const [additionalAttendeeEmail, setAdditionalAttendeeEmail] = useState('');
-
-  const [messageType, setMessageType] = useState('info');
-  const [message, setMessage] = useState('Choose a date');
 
   const dateSelectRef = useRef<HTMLElement | null>(null);
   const timeSelectRef = useRef<HTMLElement | null>(null);
@@ -221,149 +219,126 @@ export const ScheduleComponent: React.FC<ScheduleComponentProps> = ({ officeHour
   // }
 
   return (
-    <>
-      <main>
-        <h2 className="title">schedule</h2>
+    <Main>
+      <h2 className="title">schedule</h2>
 
-        {officeHours && officeHours.length > 0 ? (
-          <div className="office-hours-card card">
-            {officeHours.map((hours, index) => (
-              <span key={index}>
-                <h4 className="day">{hours.dayofweek}</h4>
-                <h4>
-                  {hours.start && hours.end
-                    ? `${hours.start} - ${hours.end}`
-                    : 'CLOSED'}
-                </h4>
-              </span>
-            ))}
-          </div>
-        ) : (
-          ''
-        )}
+      {officeHours && officeHours.length > 0 && <OfficeHoursComponent officeHours={officeHours} title={null} />}
 
-        {user_email && (
-          <>
-            <div className="schedule-select">
-              {availableDates && availableDates.length > 0 ? (
-                <div className="date-select card">
-                  <label htmlFor="date">Choose a Date</label>
-                  <select
-                    typeof="text"
-                    name="date"
-                    id="date_select"
-                    // ref={dateSelectRef}
-                    onChange={() => { }}
-                    defaultValue={selectedDate}
-                  // min={new Date().toISOString().split('T')[0]}
-                  >
-                    {availableDates.map((date, index) => (
-                      <option key={index} value={date}>
-                        {date}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              ) : (
-                ''
-              )}
-
-              {availableTimes && availableTimes.length > 0 ? (
-                <div className="time-select card">
-                  <label htmlFor="time">Choose a Time</label>
-                  <select
-                    typeof="time"
-                    name="time"
-                    id="time_select"
-                    // ref={timeSelectRef}
-                    defaultValue={selectedTime}
-                    onChange={() => { }}>
-                    {availableTimes.map((time, index) => (
-                      <option key={index} value={time}>
-                        {time}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              ) : (
-                ''
-              )}
-            </div>
-
-            {communicationPreferences &&
-              communicationPreferences.length > 0 && (
-                <div className="communication-select card">
-                  <label htmlFor="summary">Preferred Communication Type</label>
-                  <select
-                    typeof="text"
-                    name="preferred_communication_type"
-                    id="communication_select"
-                    // ref={communicationPreferenceSelectRef}
-                    onChange={() => { }}
-                    defaultValue={selectedCommunicationPreference}>
-                    {communicationPreferences.map((communication, index) => (
-                      <option key={index} value={communication}>
-                        {communication}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
-            {selectedAttendees && selectedAttendees.length > 0 ? (
-              <div className="attendees-select card">
-                <label htmlFor="attendees">Attendees</label>
-                {selectedAttendees.map((attendee, index) => (
-                  <div className="attendee">
-                    <h4 key={index}>{attendee}</h4>
-                    <button
-                      className="remove-attendee"
-                      onClick={() => { }}>
-                      <h4>-</h4>
-                    </button>
-                    <button onClick={handleAddAttendee}>
-                      <h4>+</h4>
-                    </button>
-                  </div>
-                ))}
+      {user_email && (
+        <>
+          <div className="schedule-select">
+            {availableDates && availableDates.length > 0 ? (
+              <div className="date-select card">
+                <label htmlFor="date">Choose a Date</label>
+                <select
+                  typeof="text"
+                  name="date"
+                  id="date_select"
+                  // ref={dateSelectRef}
+                  onChange={() => { }}
+                  defaultValue={selectedDate}
+                // min={new Date().toISOString().split('T')[0]}
+                >
+                  {availableDates.map((date, index) => (
+                    <option key={index} value={date}>
+                      {date}
+                    </option>
+                  ))}
+                </select>
               </div>
             ) : (
               ''
             )}
 
-            <div
-              className={`additional-attendee card ${showAdditionalAttendee ? 'view' : ''
-                }`}
-              id="additional_attendee">
-              <label htmlFor="attendees">Additional Attendee</label>
-              <div className="attendee">
-                <input
-                  type="email"
-                  value={additionalAttendeeEmail}
-                  onChange={(event) =>
-                    setAdditionalAttendeeEmail(event.target.value)
-                  }
-                />
-                <button className="add-attendee" onClick={() => { }}>
-                  <h4>+</h4>
-                </button>
+            {availableTimes && availableTimes.length > 0 ? (
+              <div className="time-select card">
+                <label htmlFor="time">Choose a Time</label>
+                <select
+                  typeof="time"
+                  name="time"
+                  id="time_select"
+                  // ref={timeSelectRef}
+                  defaultValue={selectedTime}
+                  onChange={() => { }}>
+                  {availableTimes.map((time, index) => (
+                    <option key={index} value={time}>
+                      {time}
+                    </option>
+                  ))}
+                </select>
               </div>
-            </div>
-
-            <button>
-              <h3>SCHEDULE</h3>
-            </button>
-          </>
-        )}
-
-        {message ? (
-          <div className={`status-bar card ${messageType}`}>
-            <span>{message}</span>
+            ) : (
+              ''
+            )}
           </div>
-        ) : (
-          ''
-        )}
-      </main>
-    </>
+
+          {communicationPreferences &&
+            communicationPreferences.length > 0 && (
+              <div className="communication-select card">
+                <label htmlFor="summary">Preferred Communication Type</label>
+                <select
+                  typeof="text"
+                  name="preferred_communication_type"
+                  id="communication_select"
+                  // ref={communicationPreferenceSelectRef}
+                  onChange={() => { }}
+                  defaultValue={selectedCommunicationPreference}>
+                  {communicationPreferences.map((communication, index) => (
+                    <option key={index} value={communication}>
+                      {communication}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+          {selectedAttendees && selectedAttendees.length > 0 ? (
+            <div className="attendees-select card">
+              <label htmlFor="attendees">Attendees</label>
+              {selectedAttendees.map((attendee, index) => (
+                <div className="attendee">
+                  <h4 key={index}>{attendee}</h4>
+                  <button
+                    className="remove-attendee"
+                    onClick={() => { }}>
+                    <h4>-</h4>
+                  </button>
+                  <button onClick={handleAddAttendee}>
+                    <h4>+</h4>
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            ''
+          )}
+
+          <div
+            className={`additional-attendee card ${showAdditionalAttendee ? 'view' : ''
+              }`}
+            id="additional_attendee">
+            <label htmlFor="attendees">Additional Attendee</label>
+            <div className="attendee">
+              <input
+                type="email"
+                value={additionalAttendeeEmail}
+                onChange={(event) =>
+                  setAdditionalAttendeeEmail(event.target.value)
+                }
+              />
+              <button className="add-attendee" onClick={() => { }}>
+                <h4>+</h4>
+              </button>
+            </div>
+          </div>
+
+          <button>
+            <h3>SCHEDULE</h3>
+          </button>
+        </>
+      )}
+
+      {message && <StatusBar show={showStatusBar} messageType={messageType} message={message} />}
+    </Main>
   );
 }

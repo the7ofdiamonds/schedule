@@ -1,0 +1,21 @@
+.office-hours-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+
+  .office-hours-day {
+    .day,
+    .hours {
+      padding: 0.5em;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .office-hours-card {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}

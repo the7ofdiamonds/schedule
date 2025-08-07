@@ -1,6 +1,6 @@
 {
   "name": "@the7ofdiamonds/schedule",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Show hours of operations and book clients.",
   "author": "@the7ofdiamonds",
   "license": "ISC",
@@ -40,8 +40,8 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "@rollup/plugin-commonjs": "^28.0.3",
-    "@the7ofdiamonds/gateway": "^0.0.31",
-    "@the7ofdiamonds/ui-ux": "^1.0.48",
+    "@the7ofdiamonds/gateway": "^0.0.32",
+    "@the7ofdiamonds/ui-ux": "^1.0.55",
     "browser-sync": "^3.0.3",
     "buffer": "^6.0.3",
     "cors": "^2.8.5",
