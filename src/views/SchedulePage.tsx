@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import type { TypedUseSelectorHook } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { Section } from '@the7ofdiamonds/ui-ux';
+
 import { ScheduleComponent, type Hours } from './components/ScheduleComponent';
-import { useNavigate } from 'react-router-dom';
 
 interface SchedulePageProps<RootState, AppDispatch> {
     useAppSelector: TypedUseSelectorHook<RootState>;

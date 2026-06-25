@@ -1,7 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { scheduleSlice } from '@/controllers/scheduleSlice';
 import { userSlice } from '@the7ofdiamonds/gateway';
+
+import { scheduleSlice } from '../controllers/scheduleSlice';
 
 export const store = configureStore({
     reducer: {

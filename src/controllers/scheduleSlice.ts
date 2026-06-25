@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { combineDateTimeToTimestamp, combineDateTime } from '@/utils/Schedule';
+import { combineDateTimeToTimestamp, combineDateTime } from '../utils/Schedule';
 
 type ScheduleState = {
   scheduleLoading: boolean;

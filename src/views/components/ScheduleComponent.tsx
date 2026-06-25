@@ -4,7 +4,8 @@ import type { TypedUseSelectorHook } from 'react-redux';
 
 import { Main, StatusBar } from '@the7ofdiamonds/ui-ux';
 import type { Hours, MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
-import { getUser } from '@the7ofdiamonds/gateway';
+// import { getUser } from '@the7ofdiamonds/gateway';
+
 import {
   getAvailableTimes,
   updateDate,
@@ -18,8 +19,8 @@ import {
   getOfficeHours,
   getCommunicationPreferences,
   updateCommunicationPreference,
-} from '@/controllers/scheduleSlice';
-import { formatOfficeHours, datesAvail, timesAvail } from '@/utils/Schedule';
+} from '../../controllers/scheduleSlice';
+import { formatOfficeHours, datesAvail, timesAvail } from '../../utils/Schedule';
 import { OfficeHoursComponent } from './office-hours/OfficeHoursComponent';
 
 interface ScheduleComponentProps {

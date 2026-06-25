@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 
 import dts from 'vite-plugin-dts';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 import path from 'path';
 
@@ -10,12 +11,12 @@ import rollupOptions from './rollup.config';
 /** @type {import('vite').UserConfig} */
 export default defineConfig({
   plugins: [
-    cssInjectedByJsPlugin(),
+    tsconfigPaths(),
     dts({ insertTypesEntry: true, outDir: 'dist/types' }),
   ],
   build: {
     cssCodeSplit: true,
-    sourcemap: true,
+    sourcemap: false,
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'Schedule',

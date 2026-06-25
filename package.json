@@ -4,6 +4,22 @@
   "description": "Show hours of operations and book clients.",
   "author": "@the7ofdiamonds",
   "license": "ISC",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./scss": {
+      "sass": "./scss/index.scss",
+      "default": "./scss/index.scss"
+    }
+  },
+  "files": [
+    "dist",
+    "scss"
+  ],
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/the7ofdiamonds/schedule.git"
@@ -12,17 +28,6 @@
     "url": "https://github.com/the7ofdiamonds/schedule/issues"
   },
   "homepage": "https://github.com/the7ofdiamonds/schedule#readme",
-  "files": [
-    "dist"
-  ],
-  "types": "./dist/types/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/types/index.d.ts"
-    }
-  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
@@ -32,32 +37,28 @@
     "vite": "vite -c vite.config.ts",
     "build": "vite build",
     "preview": "vite preview --port 8080",
-    "update-dev": "git push schedule development",
-    "update-prod": "git push schedule",
-    "refactor": "./refactor.sh && npm run update-prod",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "update-prod": "git push git@github.com:the7ofdiamonds/schedule.git",
+    "update-dev": "git push ssh://git@gitlab.jclyonsenterprises.com:2424/seven-tech/packages/javascript/schedule.git",
+    "workflow": "bash ../workflow.sh",
+    "refactor": "npm run workflow refactor",
+    "test": "echo \"No test specified\" && exit 0",
+    "clean": "rimraf dist node_modules"
   },
   "dependencies": {
+    "@the7ofdiamonds/ui-ux": "latest",
+    "@the7ofdiamonds/gateway": "latest",
     "@reduxjs/toolkit": "^1.9.5",
     "@rollup/plugin-commonjs": "^28.0.3",
-    "@the7ofdiamonds/gateway": "^0.0.32",
-    "@the7ofdiamonds/ui-ux": "^1.0.55",
     "browser-sync": "^3.0.3",
     "buffer": "^6.0.3",
     "cors": "^2.8.5",
     "crypto-browserify": "^3.12.0",
     "del": "^8.0.0",
-    "firebase": "^10.0.0",
     "fs": "^0.0.1-security",
     "glob": "^11.0.1",
     "marked": "^15.0.5",
     "moment": "^2.29.4",
-    "node": "^23.8.0",
     "path": "^0.12.7",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-redux": "^8.0.0",
-    "react-router-dom": "^6.14.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "source-map-js": "^1.0.2",
     "tslib": "^2.8.1",
@@ -90,10 +91,12 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "peerDependencies": {
+    "firebase": "^10.0.0",
+    "firebaseui": "^6.1.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "@the7ofdiamonds/ui-ux": "^1.0.48",
-    "@the7ofdiamonds/gateway": "^0.0.31"
+    "react-redux": "^8.0.0",
+    "react-router-dom": "^6.14.2"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.9.5"
