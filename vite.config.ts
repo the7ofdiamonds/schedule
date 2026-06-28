@@ -11,8 +11,8 @@ import rollupOptions from './rollup.config';
 /** @type {import('vite').UserConfig} */
 export default defineConfig({
   plugins: [
-    tsconfigPaths(),
     dts({ insertTypesEntry: true, outDir: 'dist/types' }),
+    tsconfigPaths(),
   ],
   build: {
     cssCodeSplit: true,

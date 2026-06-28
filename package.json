@@ -4,7 +4,7 @@
   "description": "Show hours of operations and book clients.",
   "author": "@the7ofdiamonds",
   "license": "ISC",
-  "types": "./dist/types/index.d.ts",
+  "type": "module",
   "exports": {
     ".": {
       "import": "./dist/index.js",
