@@ -47,11 +47,6 @@
     "test": "echo \"No test specified\" && exit 0",
     "clean": "rimraf dist node_modules"
   },
-  "dependencies": {
-    "@the7ofdiamonds/ui-ux": "latest",
-    "@the7ofdiamonds/gateway": "latest",
-    "@reduxjs/toolkit": "^1.9.5"
-  },
   "devDependencies": {
     "@types/node": "^22.10.7",
     "@types/react": "^18.3.18",
@@ -64,6 +59,9 @@
     "vite-plugin-dts": "^4.5.4"
   },
   "peerDependencies": {
+    "@reduxjs/toolkit": "^1.9.5",
+    "@the7ofdiamonds/ui-ux": "latest",
+    "@the7ofdiamonds/gateway": "latest",
     "firebase": "^10.0.0",
     "firebaseui": "^6.1.0",
     "react": "^18.3.1",
