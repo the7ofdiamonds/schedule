@@ -64,7 +64,6 @@
   "peerDependencies": {
     "@reduxjs/toolkit": "^2.12.0",
     "@the7ofdiamonds/ui-ux": "latest",
-    "@the7ofdiamonds/gateway": "latest",
     "firebase": "^10.0.0",
     "firebaseui": "^6.1.0",
     "react": "^18.3.1",
