@@ -44,8 +44,8 @@
     "preview": "vite preview --port 8080",
     "update-prod": "git push git@github.com:the7ofdiamonds/schedule.git",
     "update-dev": "git push ssh://git@gitlab.jclyonsenterprises.com:2424/seven-tech/packages/javascript/schedule.git",
-    "workflow": "bash ../workflow.sh",
-    "refactor": "npm run workflow refactor",
+    "workflow": "bash update_npm_workflow.sh",
+    "refactor": "bash update_npm_workflow.sh refactor",
     "test": "echo \"No test specified\" && exit 0",
     "clean": "rimraf dist node_modules"
   },
@@ -62,7 +62,7 @@
     "vite-plugin-dts": "^4.5.4"
   },
   "peerDependencies": {
-    "@reduxjs/toolkit": "^1.9.5",
+    "@reduxjs/toolkit": "^2.12.0",
     "@the7ofdiamonds/ui-ux": "latest",
     "@the7ofdiamonds/gateway": "latest",
     "firebase": "^10.0.0",
