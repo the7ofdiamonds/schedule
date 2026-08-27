@@ -2,6 +2,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { combineDateTimeToTimestamp, combineDateTime } from '../utils/Schedule';
 
+import type { HoursObject } from '@the7ofdiamonds/ui-ux';
+import { OfficeHours } from '@the7ofdiamonds/ui-ux';
+
 type ScheduleState = {
   scheduleLoading: boolean;
   scheduleError: Error | null;
@@ -21,7 +24,7 @@ type ScheduleState = {
   due_date: number | null | null;
   event_date_time: string | null;
   event: string | null;
-  office_hours: Array<any> | null;
+  office_hours: Array<HoursObject> | null;
   communication_preferences: Array<string> | null;
   preferred_communication_type?: string | null;
   google_event_id: string | null;
@@ -74,6 +77,19 @@ export const getOfficeHours = createAsyncThunk(
 
       const responseData = await response.json();
       return responseData;
+    } catch (error) {
+      const err = error as Error;
+      throw new Error(err.message);
+    }
+  }
+);
+
+export const getOfficeHoursLocalData = createAsyncThunk(
+  'schedule/getOfficeHoursLocalData',
+  async (availability: Array<HoursObject>) => {
+    try {
+      // console.log(new OfficeHours(availability))
+      return availability;
     } catch (error) {
       const err = error as Error;
       throw new Error(err.message);
@@ -328,6 +344,23 @@ export const scheduleSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getOfficeHoursLocalData.pending, (state) => {
+        state.scheduleLoading = true;
+        state.scheduleError = null;
+      })
+      .addCase(getOfficeHoursLocalData.fulfilled, (state, action) => {
+        state.scheduleLoading = false;
+        state.office_hours = action.payload;
+        state.scheduleError = null;
+      })
+      .addCase(getOfficeHoursLocalData.rejected, (state, action) => {
+        state.scheduleLoading = false;
+        state.scheduleError =
+          (action.error as Error) ||
+          new Error('Failed to get office hours');
+        state.scheduleErrorMessage =
+          action.error.message || 'Failed to get office hours';
+      })
       .addCase(getOfficeHours.pending, (state) => {
         state.scheduleLoading = true;
         state.scheduleError = null;
