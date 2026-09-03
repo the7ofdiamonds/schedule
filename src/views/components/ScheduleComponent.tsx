@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import type { TypedUseSelectorHook } from 'react-redux';
 
 import { Main, StatusBar } from '@the7ofdiamonds/ui-ux';
+import { OfficeHours } from '@the7ofdiamonds/ui-ux';
 import type { Hours, MessageType, StatusBarVisibility } from '@the7ofdiamonds/ui-ux';
 // import { getUser } from '@the7ofdiamonds/gateway';
 
@@ -24,7 +25,7 @@ import { formatOfficeHours, datesAvail, timesAvail } from '../../utils/Schedule'
 import { OfficeHoursComponent } from './office-hours/OfficeHoursComponent';
 
 interface ScheduleComponentProps {
-  officeHours: Array<Hours> | null;
+  officeHours: OfficeHours | null;
   availableDates: Array<string>
   availableTimes: Array<string>;
   communicationPreferences: Array<string>;
@@ -223,7 +224,7 @@ export const ScheduleComponent: React.FC<ScheduleComponentProps> = ({ officeHour
     <Main>
       <h2 className="title">schedule</h2>
 
-      {officeHours && officeHours.length > 0 && <OfficeHoursComponent officeHours={officeHours} title={null} />}
+      {officeHours && <OfficeHoursComponent officeHours={officeHours} title={null} />}
 
       {user_email && (
         <>

@@ -7,11 +7,13 @@ import { WorkDayComponent } from '../work-day/WorkDayComponent';
 import styles from './OfficeHours.module.scss';
 
 interface OfficeHoursComponentProps {
-    title: string | null;
     officeHours: OfficeHours | null;
+    title?: string | null;
 }
 
 export const OfficeHoursComponent: React.FC<OfficeHoursComponentProps> = ({ title, officeHours }) => {
+    const { sun, mon, tue, wed, thu, fri, sat } = officeHours;
+
     return (
         <>
             {officeHours && (
@@ -19,13 +21,13 @@ export const OfficeHoursComponent: React.FC<OfficeHoursComponentProps> = ({ titl
                     <h3 className='title'>{title ?? 'Hours Of Operation'}</h3>
                     <table>
                         <tbody>
-                            <WorkDayComponent hours={officeHours.sun} />
-                            <WorkDayComponent hours={officeHours.mon} />
-                            <WorkDayComponent hours={officeHours.tue} />
-                            <WorkDayComponent hours={officeHours.wed} />
-                            <WorkDayComponent hours={officeHours.thu} />
-                            <WorkDayComponent hours={officeHours.fri} />
-                            <WorkDayComponent hours={officeHours.sat} />
+                            <WorkDayComponent hours={sun} />
+                            <WorkDayComponent hours={mon} />
+                            <WorkDayComponent hours={tue} />
+                            <WorkDayComponent hours={wed} />
+                            <WorkDayComponent hours={thu} />
+                            <WorkDayComponent hours={fri} />
+                            <WorkDayComponent hours={sat} />
                         </tbody>
                     </table>
                 </div>

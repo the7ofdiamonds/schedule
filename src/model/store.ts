@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { TypedUseSelectorHook } from 'react-redux';
 
 import { userSlice } from '@the7ofdiamonds/gateway';
 
@@ -13,3 +14,4 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+export type AppSelectorHook = TypedUseSelectorHook<RootState>;
